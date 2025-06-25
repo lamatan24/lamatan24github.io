@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>LAMATAN Market - Électronique</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    body {
+      background: #181818;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      background: rgba(103, 15, 15, 0.95);
+      border-radius: 10px;
+      margin: 10px;
+      padding: 0 0 10px 0;
+      text-align: left;
+      position: relative;
+      min-height: 90px; /* un peu plus haut pour la marque + nav */
+    }
+    .lama-title {
+      position: absolute;
+      top: 10px;
+      right: 30px;
+      font-size: 2.2em;
+      font-weight: bold;
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: colorAnim 2s infinite alternate;
+      z-index: 2;
+    }
+    .lama-title .lama { color: #111; text-shadow: 1px 1px 2px #fff; }
+    .lama-title .tan { color: #e8491d; text-shadow: 1px 1px 2px #fff; }
+    .lama-title .market-bag {
+      display: inline-flex;
+      align-items: center;
+      background: #25D366;
+      color: #fff;
+      border-radius: 8px;
+      padding: 2px 10px 2px 6px;
+      font-size: 0.8em;
+      font-weight: bold;
+      margin-left: 8px;
+      box-shadow: 0 2px 8px #0003;
+      letter-spacing: 1px;
+    }
+    .lama-title .market-bag span {
+      margin-left: 4px;
+      font-size: 1em;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    @keyframes colorAnim {
+      0% { filter: brightness(1); }
+      100% { filter: brightness(1.2); }
+    }
+    .nav-bar {
+      display: flex;
+      justify-content: flex-start; /* Onglets à gauche */
+      gap: 30px;
+      margin-top: 65px;
+      margin-bottom: 0;
+      margin-left: 30px;
+      position: relative;
+      z-index: 1;
+    }
+    .nav-bar a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1em;
+      padding: 6px 18px;
+      border-radius: 5px 5px 0 0;
+      background: #670f0f;
+      transition: background 0.2s;
+    }
+    .nav-bar a:hover, .nav-bar a.active {
+      background: #fff;
+      color: #670f0f;
+    }
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+      position: relative;
+    }
+    .search-bar input {
+      width: 320px;
+      padding: 8px;
+      border-radius: 5px 0 0 5px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+    .search-bar button {
+      padding: 8px 16px;
+      border-radius: 0 5px 5px 0;
+      border: none;
+      background: #e8491d;
+      color: #fff;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .search-bar button:hover {
+      background: #b32a0a;
+    }
+    .autocomplete-list {
+      position: absolute;
+      top: 38px;
+      left: 0;
+      width: 320px;
+      background: #fff;
+      color: #222;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 2px 8px #0003;
+      z-index: 10;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .autocomplete-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+      transition: background 0.15s;
+    }
+    .autocomplete-item:last-child { border-bottom: none; }
+    .autocomplete-item:hover {
+      background: #e8491d;
+      color: #fff;
+    }
+    .welcome-message {
+      text-align: center;
+      font-size: 1.4em;
+      color: #fff;
+      margin: 20px 0 10px 0;
+      animation: fadeIn 2s;
+      min-height: 2em;
+    }
+    .desc-activite {
+      text-align: center;
+      color: #ffe0e0;
+      margin-bottom: 20px;
+      font-size: 1.1em;
+      animation: fadeIn 3s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      margin: 20px 0 10px 0;
+    }
+    .category {
+      background: #fff;
+      color: #670f0f;
+      border-radius: 6px;
+      padding: 7px 18px;
+      font-weight: bold;
+      font-size: 1em;
+      box-shadow: 0 2px 8px #0002;
+      margin-bottom: 5px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .category.active, .category:hover {
+      background: #e8491d;
+      color: #fff;
+    }
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2em;
+      justify-content: center;
+      margin: 2em 0;
+    }
+    .product-card {
+      background: rgba(255,255,255,0.97);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 250px;
+      padding: 1em;
+      text-align: center;
+      color: #222;
+      transition: transform 0.15s;
+    }
+    .product-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .product-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+    .product-card h3 {
+      margin: 0.5em 0;
+      color: #670f0f;
+    }
+    .product-card p {
+      margin: 0.5em 0;
+    }
+    .product-card a {
+      background: #25D366;
+      color: #fff;
+      border: none;
+      padding: 0.5em 1em;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      margin-top: 8px;
+      display: inline-block;
+    }
+    .product-card a:hover {
+      background: #1DA851;
+    }
+    footer {
+      background: rgba(103, 15, 15, 0.95);
+      border-radius: 10px;
+      margin: 10px;
+      padding: 10px;
+      text-align: center;
+      color: #fff;
+    }
+    .category[data-category="Ordinateur"]::before {
+      content: "💻 ";
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="lama-title">
+      <span class="lama">LAMA</span>
+      <span class="tan">TAN</span>
+      <span class="market-bag">🛍️ <span>MAKET</span></span>
+    </div>
+    <div class="nav-bar">
+      <a href="#" class="active">Accueil</a>
+      <a href="#products">Produits</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </header>
+  <main>
+    <div class="welcome-message" id="welcome-message"></div>
+    <div class="desc-activite">
+      Bienvenue sur LAMATAN Market, votre boutique de confiance pour l'achat de produits électroniques de qualité : smartphones, casques, montres, TV, accessoires, et bien plus !
+    </div>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Rechercher un produit, une marque, une catégorie..." autocomplete="off">
+      <button onclick="searchProducts()">Rechercher</button>
+      <div id="autocomplete-list" class="autocomplete-list" style="display:none"></div>
+    </div>
+    <div class="categories" id="categories"></div>
+    <h2 id="products">Nos produits électroniques</h2>
+    <div id="products-list" class="product-list"></div>
+  </main>
+  <footer>
+    &copy; 2025 LamaTan Market - Tous droits réservés.
+  </footer>
+  <script>
+    // Animation titre
+    const welcomeText = "👋 Bonjour et bienvenue à tous nos clients sur LAMATAN Market !";
+    let i = 0;
+    function typeWriter() {
+      if (i < welcomeText.length) {
+        document.getElementById("welcome-message").innerHTML += welcomeText.charAt(i);
+        i++;
+        setTimeout(typeWriter, 40);
+      }
+    }
+    document.getElementById("welcome-message").innerHTML = "";
+    typeWriter();
+
+    // Base de données produits avec images Bing et prix ajustés
+    const products = [
+      {
+        name: "Samsung Galaxy S24 Ultra",
+        price: 890000,
+        image: "https://urls.fr/21mRN6",
+        description: "6,8'' AMOLED, 512Go, 5G, Caméra 200MP",
+        category: "Smartphone",
+        brand: "Samsung"
+      },
+      {
+        name: "Samsung Galaxy S23",
+        price: 620000,
+        image: "https://urls.fr/eu1cLc",
+        description: "6,1'' AMOLED, 256Go, 5G, Caméra 50MP",
+        category: "Smartphone",
+        brand: "Samsung"
+      },
+      {
+        name: "Samsung Galaxy A54",
+        price: 295000,
+        image: "https://urls.fr/4MAB2C",
+        description: "6,4'' AMOLED, 128Go, 5G, Caméra 50MP",
+        category: "Smartphone",
+        brand: "Samsung"
+      },
+      {
+        name: "Casque JBL Tune 510BT",
+        price: 22000,
+        image: "https://urls.fr/_fZ2Cu",
+        description: "Bluetooth, 40h autonomie, Micro intégré",
+        category: "Casque",
+        brand: "JBL"
+      },
+      {
+        name: "Apple AirPods Max",
+        price: 320000,
+        image: "https://urls.fr/N1SmrH",
+        description: "Audio spatial, ANC, Bluetooth",
+        category: "Casque",
+        brand: "Apple"
+      },
+      {
+        name: "LG OLED C3 55''",
+        price: 1100000,
+        image: "https://urls.fr/rDaUF8",
+        description: "4K OLED, HDR10, webOS Smart TV",
+        category: "TV",
+        brand: "LG"
+      },
+      {
+        name: "Ordinateur Portable HP 15",
+        price: 260000,
+        image: "https://urls.fr/i_Cuq_",
+        description: "Intel i5, 8 Go RAM, 512 Go SSD, Windows 11",
+        category: "Ordinateur",
+        brand: "HP"
+      },
+      {
+        name: "Tecno Camon 40 Pro",
+        price: 285000,
+        image: "https://th.bing.com/th/id/OIP.7w6QwQwQwQwQwQwQwQwHaHa?pid=ImgDet&rs=1",
+        description: "6,78'' AMOLED, 512Go, 8Go RAM, Caméra 108MP, 5000mAh, Android 14",
+        category: "Smartphone",
+        brand: "Tecno"
+      },
+      {
+        name: "Infinix Hot 40",
+        price: 155000,
+        image: "https://th.bing.com/th/id/OIP.8w6QwQwQwQwQwQwQwQwHaHa?pid=ImgDet&rs=1",
+        description: "6,78'' IPS, 256Go, 16Go RAM, Caméra 50MP, 5000mAh, Android 13",
+        category: "Smartphone",
+        brand: "Infinix"
+      },
+      {
+        name: "Infinix Pova G Pro",
+        price: 170000,
+        image: "https://th.bing.com/th/id/OIP.9w6QwQwQwQwQwQwQwQwHaHa?pid=ImgDet&rs=1",
+        description: "6,8'' IPS, 256Go, 16Go RAM, Caméra 50MP, 5000mAh, Android 13",
+        category: "Smartphone",
+        brand: "Infinix"
+      },
+      {
+        name: "Samsung Galaxy A73 5G",
+        price: 295000,
+        image: "https://th.bing.com/th/id/OIP.0w6QwQwQwQwQwQwQwQwHaHa?pid=ImgDet&rs=1",
+        description: "6,7'' Super AMOLED+, 256Go, 16Go RAM, 5G, Caméra 108MP, 5000mAh",
+        category: "Smartphone",
+        brand: "Samsung"
+      },
+      {
+        name: "Infinix Note 50 Pro",
+        price: 210000,
+        image: "https://th.bing.com/th/id/OIP.1w6QwQwQwQwQwQwQwQwHaHa?pid=ImgDet&rs=1",
+        description: "6,95'' AMOLED, 256Go, 16Go RAM, Caméra 108MP, 5000mAh, Android 14",
+        category: "Smartphone",
+        brand: "Infinix"
+      },
+      {
+        name: "Oppo F11",
+        price: 185000,
+        image: "https://th.bing.com/th/id/OIP.2w6QwQwQwQwQwQwQwQwHaHa?pid=ImgDet&rs=1",
+        description: "6,53'' IPS, 256Go, 16Go RAM, Caméra 48MP, 4020mAh, Android 9",
+        category: "Smartphone",
+        brand: "Oppo"
+      },
+      {
+        name: "Huawei Pura 70 Ultra",
+        price: 650000,
+        image: "https://th.bing.com/th/id/OIP.3w6QwQwQwQwQwQwQwQwHaHa?pid=ImgDet&rs=1",
+        description: "6,8'' OLED, 512Go, 16Go RAM, Caméra 50MP, 5200mAh, HarmonyOS 4.2",
+        category: "Smartphone",
+        brand: "Huawei"
+      },
+      {
+        name: "iPhone 15 Pro Max",
+        price: 1100000,
+        image: "https://th.bing.com/th/id/OIP.4w6QwQwQwQwQwQwQwQwHaHa?pid=ImgDet&rs=1",
+        description: "6,7'' OLED, 256Go, 8Go RAM, Caméra 48MP, iOS 17, Batterie longue durée",
+        category: "Smartphone",
+        brand: "Apple"
+      },
+      {
+        name: "Samsung Galaxy S24 Ultra",
+        price: 950000,
+        image: "https://th.bing.com/th/id/OIP.8v6wQwQwQwQwQwQwQwQwHaHa?pid=ImgDet&rs=1",
+        description: "6,8'' AMOLED, 512Go, 12Go RAM, 5G, Caméra 200MP, 5000mAh, Android 14",
+        category: "Smartphone",
+        brand: "Samsung"
+      }
+      // Ajoute d'autres produits avec des liens directs d'images valides
+    ];
+
+    // Génération dynamique des catégories
+    function getCategories() {
+      const cats = [...new Set(products.map(p => p.category))];
+      return cats;
+    }
+    function renderCategories(selected = "") {
+      const cats = getCategories();
+      document.getElementById('categories').innerHTML = cats.map(cat =>
+        `<span class="category${cat === selected ? ' active' : ''}" data-category="${cat}" onclick="filterByCategory('${cat}')">${cat}</span>`
+      ).join('');
+    }
+
+    // Affichage des produits
+    function renderProducts(list) {
+      const container = document.getElementById('products-list');
+      // Toujours afficher au moins 2 produits (jamais vide)
+      let toShow = list;
+      if (toShow.length === 0) toShow = products.slice(0, 2);
+      container.innerHTML = toShow.map(product => `
+        <div class="product-card">
+          <img src="${product.image}" alt="${product.name}">
+          <h3>${product.name}</h3>
+          <p>${product.description}</p>
+          <strong>${product.price.toLocaleString()} CFA</strong>
+          <br>
+          <a href="https://wa.me/22870759113?text=Bonjour,%20je%20veux%20acheter%20le%20produit%20${encodeURIComponent(product.name)}" target="_blank">
+            Acheter sur WhatsApp
+          </a>
+        </div>
+      `).join('');
+    }
+
+    // Recherche intelligente + autocomplétion
+    function searchProducts() {
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      let filtered = [];
+      if (!query) {
+        filtered = products;
+      } else {
+        filtered = products.filter(p =>
+          p.name.toLowerCase().includes(query) ||
+          p.description.toLowerCase().includes(query) ||
+          (p.brand && p.brand.toLowerCase().includes(query)) ||
+          (p.category && p.category.toLowerCase().includes(query))
+        );
+        // Si aucun résultat, proposer 2 produits les plus proches par mots clés
+        if (filtered.length === 0) {
+          filtered = products.filter(p =>
+            query.split(' ').some(word =>
+              p.name.toLowerCase().includes(word) ||
+              p.description.toLowerCase().includes(word) ||
+              (p.brand && p.brand.toLowerCase().includes(word)) ||
+              (p.category && p.category.toLowerCase().includes(word))
+            )
+          ).slice(0, 2);
+          if (filtered.length === 0) filtered = products.slice(0, 2);
+        }
+      }
+      renderProducts(filtered);
+      renderCategories();
+      showAutocomplete(query);
+    }
+
+    // Autocomplétion améliorée : toujours proposer au moins 2 suggestions
+    function showAutocomplete(query) {
+      const autoDiv = document.getElementById('autocomplete-list');
+      if (!query || query.length < 2) {
+        autoDiv.style.display = "none";
+        return;
+      }
+      let suggestions = products.filter(p =>
+        p.name.toLowerCase().includes(query) ||
+        (p.brand && p.brand.toLowerCase().includes(query)) ||
+        (p.category && p.category.toLowerCase().includes(query))
+      );
+      if (suggestions.length === 0) {
+        suggestions = products.filter(p =>
+          query.split(' ').some(word =>
+            p.name.toLowerCase().includes(word) ||
+            (p.brand && p.brand.toLowerCase().includes(word)) ||
+            (p.category && p.category.toLowerCase().includes(word))
+          )
+        ).slice(0, 2);
+        if (suggestions.length === 0) suggestions = products.slice(0, 2);
+      }
+      autoDiv.innerHTML = suggestions.slice(0, 7).map(p =>
+        `<div class="autocomplete-item" onclick="selectAutocomplete('${p.name.replace(/'/g,"\\'")}')">${p.name}</div>`
+      ).join('');
+      autoDiv.style.display = "block";
+    }
+
+    // Sélection d'une suggestion
+    function selectAutocomplete(name) {
+      document.getElementById('searchInput').value = name;
+      document.getElementById('autocomplete-list').style.display = "none";
+      searchProducts();
+    }
+
+    // Filtrer par catégorie
+    function filterByCategory(cat) {
+      renderProducts(products.filter(p => p.category === cat));
+      renderCategories(cat);
+      document.getElementById('autocomplete-list').style.display = "none";
+    }
+
+    // Initialisation
+    renderProducts(products);
+    renderCategories();
+
+    // Recherche live sur entrée et autocomplétion
+    document.getElementById('searchInput').addEventListener('keyup', function(e) {
+      showAutocomplete(this.value.trim().toLowerCase());
+      if (e.key === 'Enter') searchProducts();
+    });
+    document.addEventListener('click', function(e) {
+      if (!e.target.classList.contains('autocomplete-item')) {
+        document.getElementById('autocomplete-list').style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
